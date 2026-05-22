@@ -46,7 +46,8 @@ function App() {
   });
 
   const [kayitlar, setKayitlar] = useState([]);
-
+const [adminSifre, setAdminSifre] = useState("");
+const [popupAcik, setPopupAcik] = useState(false);
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -222,6 +223,62 @@ function App() {
               <h2 className="text-5xl font-bold mt-2">
                 {genelToplamFire}
               </h2>
+              {popupAcik && (
+  <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+
+    <div className="bg-white rounded-3xl p-6 w-[90%] max-w-md shadow-2xl animate-fadeIn">
+
+      <h2 className="text-3xl font-bold text-center text-black mb-2">
+        Admin Girişi
+      </h2>
+
+      <p className="text-center text-gray-500 mb-6">
+        Excel indirmek için şifre girin
+      </p>
+
+      <input
+        type="password"
+        placeholder="Şifre"
+        value={adminSifre}
+        onChange={(e) =>
+          setAdminSifre(e.target.value)
+        }
+        className="w-full border-2 border-gray-300 rounded-2xl p-4 text-black text-lg outline-none focus:border-green-500 transition"
+      />
+
+      <div className="flex gap-3 mt-6">
+
+        <button
+          onClick={() => {
+            if (adminSifre === "berke987") {
+              excelIndir();
+              setPopupAcik(false);
+              setAdminSifre("");
+            } else {
+              toast.error("Şifre yanlış!");
+            }
+          }}
+          className="flex-1 bg-black hover:bg-gray-800 text-white p-4 rounded-2xl font-semibold transition"
+        >
+          Giriş Yap
+        </button>
+
+        <button
+          onClick={() => {
+            setPopupAcik(false);
+            setAdminSifre("");
+          }}
+          className="flex-1 bg-gray-200 hover:bg-gray-300 text-black p-4 rounded-2xl font-semibold transition"
+        >
+          İptal
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+)}
             </div>
 
             <div className="bg-white rounded-2xl p-6 shadow-lg border">
@@ -429,7 +486,7 @@ function App() {
 
         <div className="flex justify-end mt-4">
           <button
-            onClick={excelIndir}
+            onClick={() => setPopupAcik(true)}
             className="bg-green-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-green-700 transition"
           >
             Excel İndir
