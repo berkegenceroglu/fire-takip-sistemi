@@ -203,13 +203,13 @@ const gerceklesenAdet = Number(
 );
 
 const fireAlanlari = [
-  Number(formData.sise),
-  Number(formData.valf),
-  Number(formData.kapak),
-  Number(formData.separator),
-  Number(formData.kutu),
-  Number(formData.yuzuk),
-  Number(formData.etiket),
+  Number(formData.sise || 0),
+  Number(formData.valf || 0),
+  Number(formData.kapak || 0),
+  Number(formData.separator || 0),
+  Number(formData.kutu || 0),
+  Number(formData.yuzuk || 0),
+  Number(formData.etiket || 0),
 ];
 
 const hataliFireVar = fireAlanlari.some(
