@@ -172,6 +172,14 @@ const [popupAcik, setPopupAcik] = useState(false);
   };
 
   const handleSubmit = async () => {
+    const bosAlanVar = Object.values(formData).some(
+  (deger) => deger === ""
+);
+
+if (bosAlanVar) {
+  toast.error("Boş alan bırakılamaz!");
+  return;
+}
     try {
       await addDoc(collection(db, "fireKayitlari"), {
         ...formData,
