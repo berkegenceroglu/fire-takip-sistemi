@@ -186,15 +186,6 @@ const zorunluAlanlar = [
   formData.gerceklesen,
 ];
 
-const bosAlanVar = zorunluAlanlar.some(
-  (deger) => deger === ""
-);
-
-if (bosAlanVar) {
-  toast.error("Boş alan bırakılamaz!");
-  return;
-}
-
 if (bosAlanVar) {
   const gerceklesenAdet = Number(
   formData.gerceklesen
