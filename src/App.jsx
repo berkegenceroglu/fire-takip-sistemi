@@ -223,7 +223,7 @@ if (hataliFireVar) {
   return;
 }
     try {
-      await addDoc(collection(db, "fireKayitlari"), {
+     await addDoc(collection(db, "fireKayitlari"), {
   ...formData,
 
   sise: formData.sise || 0,
@@ -233,10 +233,11 @@ if (hataliFireVar) {
   kutu: formData.kutu || 0,
   yuzuk: formData.yuzuk || 0,
   etiket: formData.etiket || 0,
-        toplamFire,
-        tarih: new Date().toLocaleDateString("tr-TR"),
-        saat: new Date().toLocaleTimeString("tr-TR"),
-      });
+
+  toplamFire,
+  tarih: new Date().toLocaleDateString("tr-TR"),
+  saat: new Date().toLocaleTimeString("tr-TR"),
+});
 
       toast.success("Kayıt başarıyla eklendi!");
 
