@@ -181,6 +181,15 @@ if (bosAlanVar) {
   formData.gerceklesen
 );
 
+
+}
+  toast.error("Boş alan bırakılamaz!");
+  return;
+}
+const gerceklesenAdet = Number(
+  formData.gerceklesen
+);
+
 const fireAlanlari = [
   Number(formData.sise),
   Number(formData.valf),
@@ -199,9 +208,6 @@ if (hataliFireVar) {
   toast.error(
     "Gerçekleşen adetten fazla fire girilemez!"
   );
-  return;
-}
-  toast.error("Boş alan bırakılamaz!");
   return;
 }
     try {
