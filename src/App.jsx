@@ -172,9 +172,21 @@ const [popupAcik, setPopupAcik] = useState(false);
   };
 
   const handleSubmit = async () => {
-    const bosAlanVar = Object.values(formData).some(
+const zorunluAlanlar = [
+  formData.hat,
+  formData.urun,
+  formData.planlanan,
+  formData.gerceklesen,
+];
+
+const bosAlanVar = zorunluAlanlar.some(
   (deger) => deger === ""
 );
+
+if (bosAlanVar) {
+  toast.error("Boş alan bırakılamaz!");
+  return;
+}
 
 if (bosAlanVar) {
   const gerceklesenAdet = Number(
@@ -212,7 +224,15 @@ if (hataliFireVar) {
 }
     try {
       await addDoc(collection(db, "fireKayitlari"), {
-        ...formData,
+  ...formData,
+
+  sise: formData.sise || 0,
+  valf: formData.valf || 0,
+  kapak: formData.kapak || 0,
+  separator: formData.separator || 0,
+  kutu: formData.kutu || 0,
+  yuzuk: formData.yuzuk || 0,
+  etiket: formData.etiket || 0,
         toplamFire,
         tarih: new Date().toLocaleDateString("tr-TR"),
         saat: new Date().toLocaleTimeString("tr-TR"),
