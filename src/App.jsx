@@ -179,6 +179,13 @@ const zorunluAlanlar = [
   formData.gerceklesen,
 ];
 
+const zorunluAlanlar = [
+  formData.hat,
+  formData.urun,
+  formData.planlanan,
+  formData.gerceklesen,
+];
+
 const bosAlanVar = zorunluAlanlar.some(
   (deger) => deger === ""
 );
