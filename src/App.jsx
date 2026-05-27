@@ -177,6 +177,30 @@ const [popupAcik, setPopupAcik] = useState(false);
 );
 
 if (bosAlanVar) {
+  const gerceklesenAdet = Number(
+  formData.gerceklesen
+);
+
+const fireAlanlari = [
+  Number(formData.sise),
+  Number(formData.valf),
+  Number(formData.kapak),
+  Number(formData.separator),
+  Number(formData.kutu),
+  Number(formData.yuzuk),
+  Number(formData.etiket),
+];
+
+const hataliFireVar = fireAlanlari.some(
+  (fire) => fire > gerceklesenAdet
+);
+
+if (hataliFireVar) {
+  toast.error(
+    "Gerçekleşen adetten fazla fire girilemez!"
+  );
+  return;
+}
   toast.error("Boş alan bırakılamaz!");
   return;
 }
