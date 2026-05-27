@@ -171,56 +171,50 @@ const [popupAcik, setPopupAcik] = useState(false);
     saveAs(data, "fire-raporu.xlsx");
   };
 
-  const handleSubmit = async () => {
-const zorunluAlanlar = [
-  formData.hat,
-  formData.urun,
-  formData.planlanan,
-  formData.gerceklesen,
-];
+const handleSubmit = async () => {
 
-const zorunluAlanlar = [
-  formData.hat,
-  formData.urun,
-  formData.planlanan,
-  formData.gerceklesen,
-];
+  const zorunluAlanlar = [
+    formData.hat,
+    formData.urun,
+    formData.planlanan,
+    formData.gerceklesen,
+  ];
 
-if (bosAlanVar) {
-  const gerceklesenAdet = Number(
-  formData.gerceklesen
-);
-
-
-}
-  toast.error("Boş alan bırakılamaz!");
-  return;
-}
-const gerceklesenAdet = Number(
-  formData.gerceklesen
-);
-
-const fireAlanlari = [
-  Number(formData.sise || 0),
-  Number(formData.valf || 0),
-  Number(formData.kapak || 0),
-  Number(formData.separator || 0),
-  Number(formData.kutu || 0),
-  Number(formData.yuzuk || 0),
-  Number(formData.etiket || 0),
-];
-
-const hataliFireVar = fireAlanlari.some(
-  (fire) => fire > gerceklesenAdet
-);
-
-if (hataliFireVar) {
-  toast.error(
-    "Gerçekleşen adetten fazla fire girilemez!"
+  const bosAlanVar = zorunluAlanlar.some(
+    (deger) => deger === ""
   );
-  return;
-}
-    try {
+
+  if (bosAlanVar) {
+    toast.error("Boş alan bırakılamaz!");
+    return;
+  }
+
+  const gerceklesenAdet = Number(
+    formData.gerceklesen
+  );
+
+  const fireAlanlari = [
+    Number(formData.sise || 0),
+    Number(formData.valf || 0),
+    Number(formData.kapak || 0),
+    Number(formData.separator || 0),
+    Number(formData.kutu || 0),
+    Number(formData.yuzuk || 0),
+    Number(formData.etiket || 0),
+  ];
+
+  const hataliFireVar = fireAlanlari.some(
+    (fire) => fire > gerceklesenAdet
+  );
+
+  if (hataliFireVar) {
+    toast.error(
+      "Gerçekleşen adetten fazla fire girilemez!"
+    );
+    return;
+  }
+
+  try {
      await addDoc(collection(db, "fireKayitlari"), {
   ...formData,
 
