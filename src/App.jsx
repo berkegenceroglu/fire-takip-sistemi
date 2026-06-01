@@ -10,6 +10,10 @@ import {
   collection,
   addDoc,
   getDocs,
+  query,
+  where,
+  deleteDoc,
+  doc,
 } from "firebase/firestore";
 
 function App() {
@@ -54,6 +58,11 @@ function App() {
   const [kayitlar, setKayitlar] = useState([]);
 const [adminSifre, setAdminSifre] = useState("");
 const [popupAcik, setPopupAcik] = useState(false);
+const [silPopupAcik, setSilPopupAcik] =
+  useState(false);
+
+const [silmeSifresi, setSilmeSifresi] =
+  useState("");
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -259,6 +268,48 @@ const handleSubmit = async () => {
       toast.error("Hata oluştu!");
     }
   };
+  const bugunkuKayitlariTemizle = async () => {
+
+  if (silmeSifresi !== "berke987") {
+  toast.error("Hatalı şifre!");
+  return;
+}
+
+  try {
+
+    const bugun =
+      new Date().toLocaleDateString("tr-TR");
+
+    const querySnapshot =
+  await getDocs(
+    collection(db, "fireKayitlari")
+  );
+
+    for (const belge of querySnapshot.docs) {
+      await deleteDoc(
+        doc(
+          db,
+          "fireKayitlari",
+          belge.id
+        )
+      );
+    }
+
+    toast.success(
+      "Bugünkü kayıtlar silindi!"
+    );
+
+    verileriGetir();
+
+  } catch (error) {
+
+    console.error(error);
+
+    toast.error(
+      "Silme işlemi başarısız!"
+    );
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
@@ -328,6 +379,60 @@ const handleSubmit = async () => {
           className="flex-1 bg-gray-200 hover:bg-gray-300 text-black p-4 rounded-2xl font-semibold transition"
         >
           İptal
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+)}
+{silPopupAcik && (
+  <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+
+    <div className="bg-white rounded-3xl p-6 w-[90%] max-w-md shadow-2xl animate-fadeIn">
+
+      <h2 className="text-xl font-bold mb-4 text-red-600">
+        Kayıtları Temizle
+      </h2>
+
+      <p className="mb-4 text-gray-700">
+        Tüm kayıtlar silinecek.
+      </p>
+
+     <input
+  type="password"
+  placeholder="Admin Şifresi"
+  value={silmeSifresi}
+  onChange={(e) =>
+    setSilmeSifresi(e.target.value)
+  }
+  className="w-full border-2 border-gray-300 rounded-2xl p-4 text-black text-lg outline-none focus:border-red-500 transition mb-4"
+/>
+
+      <div className="flex gap-2">
+
+        <button
+          onClick={() =>
+            setSilPopupAcik(false)
+          }
+          className="flex-1 bg-gray-300 p-3 rounded-lg"
+        >
+          İptal
+        </button>
+
+        <button
+          onClick={async () => {
+
+            await bugunkuKayitlariTemizle();
+
+            setSilPopupAcik(false);
+
+            setSilmeSifresi("");
+          }}
+          className="flex-1 bg-red-600 text-white p-3 rounded-lg"
+        >
+          Sil
         </button>
 
       </div>
@@ -551,7 +656,13 @@ const handleSubmit = async () => {
           Kaydet
         </button>
 
-        <div className="flex justify-end mt-4">
+        <div className="flex justify-end gap-2 mt-4">
+        <button
+  onClick={() => setSilPopupAcik(true)}
+  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-semibold"
+>
+  Kayıt Temizle
+</button>
           <button
             onClick={() => setPopupAcik(true)}
             className="bg-green-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-green-700 transition"
