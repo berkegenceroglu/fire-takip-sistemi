@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import Select from "react-select";
+import { urunler } from "./urunler";
 import { db } from "./firebase";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
@@ -11,6 +13,10 @@ import {
 } from "firebase/firestore";
 
 function App() {
+  const urunSecenekleri = urunler.map((urun) => ({
+  value: urun,
+  label: urun,
+}));
   const hatlar = [
     "Hat 1",
     "Hat 2",
@@ -453,16 +459,26 @@ const handleSubmit = async () => {
           </div>
 
           <div>
-            <label className="font-semibold">Ürün Adı</label>
+          <label className="font-semibold">
+  Ürün Adı
+</label>
 
-            <input
-              type="text"
-              name="urun"
-              value={formData.urun}
-              onChange={handleChange}
-              className="w-full border rounded-lg p-3 mt-1"
-              placeholder="Ürün adı girin"
-            />
+<Select
+  options={urunSecenekleri}
+  placeholder="Ürün ara..."
+  value={
+    urunSecenekleri.find(
+      (item) => item.value === formData.urun
+    ) || null
+  }
+  onChange={(selected) =>
+    setFormData({
+      ...formData,
+      urun: selected ? selected.value : "",
+    })
+  }
+  isSearchable
+/>
           </div>
 
           <div>
