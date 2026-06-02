@@ -242,8 +242,13 @@ const handleSubmit = async () => {
   etiket: formData.etiket || 0,
 
   toplamFire,
-  tarih: new Date().toLocaleDateString("tr-TR"),
-  saat: new Date().toLocaleTimeString("tr-TR"),
+  
+  tarih: new Date().toLocaleDateString("tr-TR", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+}),
+saat: new Date().toLocaleTimeString("tr-TR"),
 });
 
       toast.success("Kayıt başarıyla eklendi!");
