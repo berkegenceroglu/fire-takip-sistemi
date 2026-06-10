@@ -57,7 +57,8 @@ const [adminSifre, setAdminSifre] = useState("");
 const [popupAcik, setPopupAcik] = useState(false);
 const [silPopupAcik, setSilPopupAcik] =
   useState(false);
-
+const [gosterilecekKayit, setGosterilecekKayit] =
+  useState(10);
 const [silmeSifresi, setSilmeSifresi] =
   useState("");
   const handleChange = (e) => {
@@ -702,7 +703,9 @@ saat: new Date().toLocaleTimeString("tr-TR"),
               </thead>
 
               <tbody>
-                {kayitlar.map((kayit) => (
+                {kayitlar
+    .slice(0, gosterilecekKayit)
+    .map((kayit) => (
                   <tr
                     key={kayit.id}
                     className="text-center hover:bg-gray-50"
@@ -727,6 +730,32 @@ saat: new Date().toLocaleTimeString("tr-TR"),
               </tbody>
 
             </table>
+<p className="text-sm text-gray-500 text-center mt-4 mb-2">
+  Toplam {kayitlar.length} kayıt
+</p>
+
+{kayitlar.length > gosterilecekKayit && (
+  <div className="mt-4 text-center">
+    <button
+      onClick={() =>
+        setGosterilecekKayit(
+          gosterilecekKayit + 10
+        )
+      }
+      className="
+        bg-blue-600
+        text-white
+        px-6
+        py-2
+        rounded-lg
+        font-semibold
+        hover:bg-blue-700
+      "
+    >
+      Daha Fazla Yükle
+    </button>
+  </div>
+)}
           </div>
         </div>
 
