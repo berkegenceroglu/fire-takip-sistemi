@@ -663,7 +663,9 @@ const excelIndir = () => {
             outerRadius={140}
             dataKey="value"
             nameKey="name"
-            label
+            label={({ name, percent }) =>
+    `${name} %${(percent * 100).toFixed(1)}`
+  }
           >
             {hurdaDagilimi.map((entry, index) => (
               <Cell
