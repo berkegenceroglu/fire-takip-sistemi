@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   PieChart,
   Pie,
@@ -19,6 +19,8 @@ import { db } from "./firebase";
 import { collection, getDocs } from "firebase/firestore";
 import * as XLSX from "xlsx";
 function Dashboard() {
+  const [hatDetaylari, setHatDetaylari] = useState({});
+  const [seciliHat, setSeciliHat] = useState(null);
   const dashboardOlustur = async () => {
 
   const querySnapshot = await getDocs(
@@ -217,11 +219,30 @@ const pareto = sirali.map((item) => {
 
 setParetoVerisi(pareto);
 const hatlar = {};
+const yeniHatDetaylari = {};
 
 filtrelenmisKayitlar.forEach((kayit) => {
 
   const hat = kayit.hat || "Bilinmiyor";
+if (!yeniHatDetaylari[hat]) {
+  yeniHatDetaylari[hat] = {
+    Kutu: 0,
+    Etiket: 0,
+    Valf: 0,
+    Kapak: 0,
+    Seperatör: 0,
+    Yüzük: 0,
+    Şişe: 0,
+  };
+}
 
+yeniHatDetaylari[hat].Kutu += Number(kayit.kutu || 0);
+yeniHatDetaylari[hat].Etiket += Number(kayit.etiket || 0);
+yeniHatDetaylari[hat].Valf += Number(kayit.valf || 0);
+yeniHatDetaylari[hat].Kapak += Number(kayit.kapak || 0);
+yeniHatDetaylari[hat].Seperatör += Number(kayit.separator || 0);
+yeniHatDetaylari[hat].Yüzük += Number(kayit.yuzuk || 0);
+yeniHatDetaylari[hat].Şişe += Number(kayit.sise || 0);
   if (!hatlar[hat]) {
     hatlar[hat] = {
       hat,
@@ -256,7 +277,7 @@ const hatListesi =
 hatListesi.sort(
   (a, b) => b.oran - a.oran
 );
-
+setHatDetaylari(yeniHatDetaylari);
 setHatAnalizi(hatListesi);
 const gunler = {};
 
@@ -787,11 +808,15 @@ const excelIndir = () => {
       <tbody>
 
         {hatAnalizi.map((hat) => (
-
-          <tr
-            key={hat.hat}
-            className="border-b hover:bg-gray-50"
-          >
+  <React.Fragment key={hat.hat}>
+   <tr
+  onClick={() =>
+    setSeciliHat(
+      seciliHat === hat.hat ? null : hat.hat
+    )
+  }
+  className="border-b hover:bg-gray-50 cursor-pointer"
+>
 
             <td className="p-3 font-semibold">
               {hat.hat}
@@ -818,8 +843,31 @@ const excelIndir = () => {
             </td>
 
           </tr>
+{seciliHat === hat.hat && (
+  <tr>
+    <td colSpan="4" className="bg-gray-50 p-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
 
-        ))}
+  <div>📦 Kutu: {hatDetaylari[hat.hat]?.Kutu || 0}</div>
+
+  <div>🏷️ Etiket: {hatDetaylari[hat.hat]?.Etiket || 0}</div>
+
+  <div>⚙️ Valf: {hatDetaylari[hat.hat]?.Valf || 0}</div>
+
+  <div>🧢 Kapak: {hatDetaylari[hat.hat]?.Kapak || 0}</div>
+
+  <div>🔘 Yüzük: {hatDetaylari[hat.hat]?.Yüzük || 0}</div>
+
+  <div>🍾 Şişe: {hatDetaylari[hat.hat]?.Şişe || 0}</div>
+
+  <div>📄 Seperatör: {hatDetaylari[hat.hat]?.Seperatör || 0}</div>
+
+</div>
+    </td>
+  </tr>
+)}
+        </React.Fragment>
+))}
 
       </tbody>
 
