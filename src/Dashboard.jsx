@@ -40,11 +40,13 @@ function Dashboard() {
 };
 
 const filtrelenmisKayitlar = tumKayitlar.filter((k) => {
-  const kayit = new Date(k.tarih);
-  const baslangic = new Date(baslangicTarih);
-  const bitis = new Date(bitisTarih);
+  const [gun, ay, yil] = k.tarih.split(".");
+  const kayitTarihi = `${yil}-${ay}-${gun}`;
 
-  return kayit >= baslangic && kayit <= bitis;
+  return (
+    kayitTarihi >= baslangicTarih &&
+    kayitTarihi <= bitisTarihi
+  );
 });
   setRaporVerileri(filtrelenmisKayitlar);
   const toplam = filtrelenmisKayitlar.reduce(
