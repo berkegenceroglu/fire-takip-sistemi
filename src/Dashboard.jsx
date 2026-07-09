@@ -45,7 +45,7 @@ const filtrelenmisKayitlar = tumKayitlar.filter((k) => {
 
   return (
     kayitTarihi >= baslangicTarih &&
-    kayitTarihi <= bitisTarihi
+    kayitTarihi <= bitisTarih
   );
 });
   setRaporVerileri(filtrelenmisKayitlar);
