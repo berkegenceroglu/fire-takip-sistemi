@@ -1918,4 +1918,6 @@ export const urunler = [
 "XU Q.130",
 "XU Q.131",
 "XU Q.132",
+"MAD ARIA",
+"MAD DAPHNE",
 ];
